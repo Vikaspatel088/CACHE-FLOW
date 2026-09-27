@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb"><meta name="description" content="See the speed of cached APIs.">
+  <title>CacheFlow — API cache observability</title><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/theme.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="CacheFlow home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>cacheflow</span></a>
+    <div class="top-meta"><span class="live" id="system-status"><span></span> API CONNECTED</span><span class="divider"></span><span class="backend"><span class="backend-dot" id="backend-dot"></span><span id="backend-label">Checking cache…</span></span><span class="entry-count" id="cache-entry-count">0 entries</span><button class="icon-button" id="clear-cache" title="Clear all cache entries" aria-label="Clear all cache entries"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg></button></div>
+  </header>
+  <main>
+    <section class="intro"><div><div class="eyebrow"><span class="eyebrow-line"></span> API PERFORMANCE LAB</div><h1>See the speed of <span>cached APIs.</span></h1><p>Make a request. Watch the cache do its work.</p></div><div class="env-badge"><span class="env-pulse"></span> LOCAL ENVIRONMENT</div></section>
+    <section class="workspace-grid">
+      <div class="left-stack">
+        <section class="panel playground"><div class="panel-heading"><div><div class="section-label">REQUEST PLAYGROUND</div><h2>Try it yourself</h2></div><span class="method-pill">GET</span></div>
+          <p class="panel-copy">Send the same request twice to see a cache hit in action.</p>
+          <form id="request-form"><div class="form-grid"><label class="field"><span>RESOURCE</span><div class="select-wrap"><select id="resource"><option value="1">Post #1 — delectus aut autem</option><option value="2">Post #2 — quis ut nam facilis</option><option value="3">Post #3 — fugiat veniam minus</option><option value="4">Post #4 — et porro tempora</option><option value="5">Post #5 — laboriosam mollitia</option></select><span class="chevron">⌄</span></div></label><label class="field ttl-field"><span>CACHE TTL <span class="field-hint">1–86,400 seconds</span></span><div class="ttl-input"><input id="ttl" type="number" value="60" min="1" max="86400" required aria-describedby="ttl-help"><span>sec</span></div><span class="visually-hidden" id="ttl-help">Cache entry lifetime, from 1 to 86,400 seconds.</span></label></div>
+          <div class="request-url"><span class="url-method">GET</span><code id="request-url">/api/data/posts?id=1&amp;ttl=60</code><button type="button" class="copy-button" id="copy-url" aria-label="Copy request URL"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button></div>
+          <button class="send-button" id="send-button" type="submit"><span class="send-label">Send request</span><span class="send-shortcut" aria-hidden="true">↵</span></button></form>
+          <div class="flow-hint"><div class="flow-step"><span class="flow-icon cache-icon">▦</span><span>Cache lookup</span></div><span class="flow-arrow">→</span><div class="flow-step"><span class="flow-icon api-icon">⇄</span><span>Data provider</span></div><span class="flow-note">on miss only</span></div>
+        </section>
+        <section class="panel result-panel" id="result-panel"><div class="result-empty"><span class="empty-orbit"><span>↗</span></span><h3>Your request result appears here</h3><p>Choose a resource and send your first request.<br>Your first call will miss. The next one will hit.</p></div></section>
+      </div>
+    </section>
+    <section class="metrics" aria-label="Cache performance overview">
+      <article class="metric-card"><div class="metric-top"><span>HIT RATE</span><span class="metric-icon blue">%</span></div><div class="metric-value" id="hit-rate">—<small>%</small></div><div class="metric-foot" id="hit-rate-note">Waiting for requests</div><div class="meter"><span id="hit-meter"></span></div></article>
+      <article class="metric-card"><div class="metric-top"><span>TOTAL REQUESTS</span><span class="metric-icon">↗</span></div><div class="metric-value" id="total-requests">0</div><div class="metric-foot">Since this session started</div></article>
+      <article class="metric-card"><div class="metric-top"><span>CACHE HITS</span><span class="metric-icon green">✓</span></div><div class="metric-value" id="cache-hits">0</div><div class="metric-foot">Served without a provider call</div></article>
+      <article class="metric-card"><div class="metric-top"><span>CACHE MISSES</span><span class="metric-icon amber">↘</span></div><div class="metric-value" id="cache-misses">0</div><div class="metric-foot">Fetched from data provider</div></article>
+      <article class="metric-card"><div class="metric-top"><span>AVG. LATENCY</span><span class="metric-icon violet">◷</span></div><div class="metric-value" id="avg-latency">—<small>ms</small></div><div class="metric-foot">Across all requests</div></article>
+      <article class="metric-card"><div class="metric-top"><span>PROVIDER CALLS</span><span class="metric-icon">⇄</span></div><div class="metric-value" id="provider-calls">0</div><div class="metric-foot">Calls made on cache misses</div></article>
+    </section>
+    <section class="insights-grid" aria-label="Cache performance insights">
+      <div class="right-stack">
+        <section class="panel chart-panel"><div class="panel-heading"><div><div class="section-label">LATENCY COMPARISON</div><h2>Speed by cache status</h2></div><span class="info-tip" title="Average response times measured by CacheFlow">i</span></div><div class="chart-legend"><span><i class="legend-dot hit-dot"></i>Cache hit</span><span><i class="legend-dot miss-dot"></i>Cache miss</span></div><div class="bar-chart" id="latency-chart" aria-label="Average response latency by cache status"><div class="chart-row"><span>HIT</span><div class="bar-track"><div class="bar hit-bar" id="hit-bar"></div></div><b id="hit-bar-label">—</b></div><div class="chart-row"><span>MISS</span><div class="bar-track"><div class="bar miss-bar" id="miss-bar"></div></div><b id="miss-bar-label">—</b></div></div><div class="chart-footer"><span>Average total response time</span><span>milliseconds</span></div><div class="distribution"><div class="distribution-heading"><span>REQUEST MIX</span><span id="distribution-total">No requests yet</span></div><div class="distribution-track" role="img" id="distribution-chart" aria-label="No requests recorded"><span class="distribution-hit" id="distribution-hit"></span><span class="distribution-miss" id="distribution-miss"></span></div><div class="distribution-legend"><span><i class="legend-dot hit-dot"></i><b id="distribution-hits">0</b> hits</span><span><i class="legend-dot miss-dot"></i><b id="distribution-misses">0</b> misses</span><strong id="distribution-rate">0% hit rate</strong></div></div></section>
+        <section class="panel trend-panel"><div class="panel-heading"><div><div class="section-label">RECENT LATENCY</div><h2>Request trend</h2></div><span class="trend-summary" id="trend-summary">0 requests</span></div><div id="latency-trend" class="latency-trend"><p>No requests yet. Your latency trend will appear here.</p></div></section>
+        <section class="panel activity-panel"><div class="panel-heading activity-head"><div><div class="section-label">LIVE ACTIVITY</div><h2>Recent requests</h2></div><span class="request-count" id="request-count">0</span></div><div class="filter-tabs" role="group" aria-label="Filter request history"><button class="filter active" data-filter="ALL">All <span id="all-count">0</span></button><button class="filter" data-filter="HIT">Hits <span id="hits-count">0</span></button><button class="filter" data-filter="MISS">Misses <span id="miss-count">0</span></button></div><div class="activity-list" id="activity-list"><div class="activity-empty"><span class="empty-symbol">◷</span><span>Requests will appear here as they run.</span></div></div><div class="activity-foot"><span><i class="activity-dot"></i> Updates in real time</span><button id="clear-history">Clear history</button></div></section>
+      </div>
+    </section>
+    <footer><span><span class="footer-mark">◈</span> CacheFlow <span class="footer-sep">/</span> API performance lab</span><span id="provider-label">Data provider: local deterministic demo</span></footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

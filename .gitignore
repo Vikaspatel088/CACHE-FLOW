@@ -1,0 +1,16 @@
+node_modules/
+.env*
+!.env.example
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+.vs/
+coverage/
+*.log
+npm-debug.log*
+*.tmp
+*.temp
+*.swp
+*.swo

@@ -1,0 +1,9 @@
+{
+  "name": "cacheflow",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "API cache performance observability lab",
+  "scripts": { "start": "node server/index.js", "dev": "node --watch server/index.js", "test": "node --test" },
+  "engines": { "node": ">=20" }
+}
